@@ -1,0 +1,16 @@
+{namespace dce=ArminVieweg\Dce\ViewHelpers}
+<f:layout name="Default" />
+
+<f:section name="main">
+	<div class="dce-mega-text-bild">
+		<h3>{field.titel}</h3>
+		<div class="text">
+			<div class="image-inner">
+				<f:for each="{dce:fal(field:'bild', contentObject:contentObject)}" as="fileReference">
+					<f:image src="{fileReference.uid}" alt="" treatIdAsReference="1" width="70m"/>
+				</f:for>
+			</div>
+			<f:format.html>{field.text}</f:format.html></div>
+		<f:link.page pageUid="{field.linkziel}" class="more">{field.linkbeschreibung} &raquo;</f:link.page>
+	</div>
+</f:section>

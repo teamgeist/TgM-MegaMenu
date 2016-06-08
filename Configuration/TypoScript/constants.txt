@@ -1,0 +1,6 @@
+plugin.tx_tgmmegamenu{
+    # cat=plugin.tx_tgm_megamenu; type=string; label= static megamenu height
+    megamenuHeight = 450
+    # cat=plugin.tx_tgm_megamenu; type=string; label= colPos woraus die menuinhalte geladen werden
+    colPos = 77
+}

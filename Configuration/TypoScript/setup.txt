@@ -1,0 +1,101 @@
+/*
+Das megamenu holt sich den Inhalt aus der ColPos die in den konstanten eingstellt ist.
+Hier kann mann z.B. das Gridelement(3 spaltig) hinterlegen welches in den Resourcen der EXT zu finden ist.
+Weitere Vorlagen sind dort zu finden wie z.B. DCE Templates/SQL
+*/
+page.includeJSFooter{
+    megamenu = EXT:tgm_megamenu/Resources/Public/JS/megamenu.js
+}
+page.includeCSS{
+    basicMega = EXT:tgm_megamenu/Resources/Public/LESS/basic.less
+    //Required ws_less
+    basicMega.outputdir = EXT:tgm_megamenu/Resources/Public/CSS/basic.css
+    basicMega.media = all
+}
+lib.megamenu = HMENU
+lib.megamenu {
+    1 = TMENU
+    1 {
+        expAll = 1
+        wrap = <ul class="nav navbar-nav mm1">|</ul>
+        noBlur = 1
+
+        NO = 1
+        NO {
+            //TODO Suche nach besseren Loesung. Am besten mit stdWrap moeglichkeiten damit mit override nutzen kann.
+            linkWrap = |<div class="megamenu" data-height="{$plugin.tx_tgmmegamenu.megamenuHeight}"><div class="menu-bridge"></div>
+            linkWrap.insertData = 1
+            wrapItemAndSub.cObject = COA
+            wrapItemAndSub.cObject{
+                5 = TEXT
+                5.value = <li class="mm1 {field:css_class}">|
+                5.insertData = 1
+                10 = CONTENT
+                10.table = tt_content
+                10.select.where = colPos = {$plugin.tx_tgmmegamenu.colPos}
+                10.select.pidInList.field= uid
+                10.wrap = <div class="inhalt-menu">|</div>
+                15 = TEXT
+                15.value = </div></li>
+            }
+            stdWrap.htmlSpecialChars = 1
+            ATagParams = class="mm1"
+        }
+        ACT < .NO
+        ACT = 1
+        ACT {
+            wrapItemAndSub.cObject = COA
+            wrapItemAndSub.cObject{
+                5 = TEXT
+                5.value = <li class="mm1 mm1-act {field:css_class}">|
+                5.insertData = 1
+                10 = CONTENT
+                10.table = tt_content
+                10.select.where = colPos = {$plugin.tx_tgmmegamenu.colPos}
+                10.select.pidInList.field= uid
+                10.wrap = <div class="inhalt-menu">|</div>
+                15 = TEXT
+                15.value = </div></li>
+            }
+            ATagParams = class="mm1 mm1-act"
+        }
+    }
+}
+//Need Extension "lvmobile", rendert einfaches menu wenn ein mobiles geraet auf der Seite ist
+[userFunc = user_lvmobile_isMobile]
+
+lib.megamenu >
+lib.megamenu = HMENU
+lib.megamenu {
+    1 = TMENU
+    1 {
+        expAll = 1
+        wrap = <ul class="nav navbar-nav mm1">|</ul>
+        noBlur = 1
+        NO = 1
+        NO {
+            wrapItemAndSub = <li class="mm1 {field:css_class}">|</li>
+            wrapItemAndSub.insertData = 1
+            stdWrap.htmlSpecialChars = 1
+            ATagParams = class="mm1"
+        }
+        ACT < .NO
+        ACT = 1
+        ACT {
+            wrapItemAndSub = <li class="mm1 mm1-act {field:css_class}">|</li>
+            wrapItemAndSub.insertData = 1
+            ATagParams = class="mm1 mm1-act"
+        }
+    }
+
+    2 < .1
+    2 {
+        wrap = <ul class="mm2">|</ul>
+        wrap.insertData = 1
+        NO.wrapItemAndSub = <li class="mm2">|</li>
+        NO.ATagParams = class="mm2"
+        ACT.wrapItemAndSub = <li class="mm2 mm2-act">|</li>
+        ACT.ATagParams = class="mm2 mm2-act"
+    }
+}
+[global]
